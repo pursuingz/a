@@ -58,14 +58,16 @@ def compress(sequence):
         lower_case_pos.append((match.start(), match.end()-1))
         lower_case_info += f'{match.start()} {match.end()-1}\n'
         sequence = sequence[:match.start()] + match.group().upper() + sequence[match.end():]
-
     # process non-ACGT characters
-    i=0
-    while(i<len(sequence)):
+    
+    i = 0
+    while(i<len(sequence)-1):
         if sequence[i] != 'A' and sequence[i]!= 'C' and sequence[i]!= 'G' and sequence[i]!= 'T': 	
             start=i
             end = i+1
+            print(end)
             while sequence[end] != 'A' and sequence[end] != 'C' and sequence[end] != 'G' and sequence[end] != 'T':
+                
                 end+=1
             non_ACGT_pos.append((start))
             non_ACGT_line = sequence[start:end]
@@ -95,7 +97,7 @@ def compress(sequence):
         sequence = sequence.replace(max_seg, '')
 
     # compresse in binary
-    binary_dict = {'A': '00', 'T': '01', 'C': '10', 'G': '11'}
+    binary_dict = {'A': '00', 'T': '01', 'C': '10', 'G': '11', '\n': ''}
     for base in sequence:
         compressed_seq += binary_dict[base]
     # concatenate all compressed bytes and return+ compressed_lower_case + compressed_non_ACGT
